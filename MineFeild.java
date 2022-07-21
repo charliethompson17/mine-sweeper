@@ -20,7 +20,7 @@ public class MineFeild extends JPanel {
 	//this is the main premise of the program
 		/*the whole thing is just a grid of JButtons 
 		  wrapped in a custom class to 
-		  store critical data associated with each cell*/
+		  store critical data associated with1 each cell*/
 	Cell[][] cells;
 	public class Cell extends JButton {
 		private static final long serialVersionUID = 1L;
@@ -29,6 +29,7 @@ public class MineFeild extends JPanel {
 		int y;
 		boolean isOpen=false;
 		boolean isBomb=false;
+		boolean flaged=false;
 		Cell(int x, int y){
 			this.x=x;
 			this.y=y;
@@ -60,26 +61,38 @@ public class MineFeild extends JPanel {
 				cell.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					Cell cell = (Cell)e.getSource();
-					if(cell.isBomb) {
-						JOptionPane.showMessageDialog(null, "player lost");
-						notLost=false;
-					}
-					else if(notLost)
-						open(cell);
+						if(notLost) {
+							Cell cell = (Cell)e.getSource();
+							if(!cell.flaged) {
+								if(notLost)
+									open(cell);
+							}
+						}
 					}
 				});
 				
 				//handle right clicks
 				cell.addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
-						Cell cell = (Cell)e.getSource();
-						if (e.getButton() == 3) {
-							cell.setText("F");
-							cell.setOpaque(true);
-							cell.setBorder(null);
-							cell.setBackground(Color.red);
-							flags++;
+						if(notLost) {
+							Cell cell = (Cell)e.getSource();
+							if(!cell.flaged&&!cell.isOpen) {
+								if (e.getButton() == 3) {
+									cell.setText("F");
+									cell.setOpaque(true);
+									cell.setBorder(null);
+									cell.setBackground(Color.red);
+									cell.flaged=true;
+									flags++;
+								}
+							}
+							else if(cell.flaged) {
+								if (e.getButton() == 3) {
+									cell.flaged=false;
+									flags--;
+									open(cell);
+								}
+							}
 						}
 					}
 				});
@@ -149,6 +162,10 @@ public class MineFeild extends JPanel {
 	
 	
 	public void open(Cell cell){
+		if(cell.isBomb) {
+			JOptionPane.showMessageDialog(null, "player lost");
+			notLost=false;
+		}
 		openCells++;
 		if(openCells==(height*width)-mines)
 			JOptionPane.showMessageDialog(null, "player won!");
