@@ -1,30 +1,47 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 public class Main  {
+	Paramaters paramaters;
+	Scoreboard scoreboard;
 	JPanel mineFeild;
 	public JFrame frame = new JFrame();
-	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	
-	public Main(int cellSize) {
-		//number of cells is a function of device size
-		int width = screenSize.width/cellSize;
-		int height = (screenSize.height-28)/cellSize;
-		
-		//number of mines is a percent of total cells
-		double density=0.10;
-		int mines = (int) (width*height*density);
-		
-		
-		mineFeild = new MineFeild(width, height, cellSize, mines);
-		frame.add(mineFeild);
+	JPanel container;
+	public Main() {
+		container = new JPanel();
+		container.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("MineSweeper");
-		frame.setPreferredSize(new Dimension(cellSize*width, cellSize*height+28));
-		frame.pack();
+		paramaters = new Paramaters(frame);
+		startGame();
+	}
+	public void startGame() {
+		container = new JPanel();
+		container.setLayout(new BorderLayout());
+		paramaters = new Paramaters(frame);
+		scoreboard = new Scoreboard(paramaters);
+		scoreboard.reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("reset clicked");
+				container.removeAll();
+				startGame();
+			}
+		});
+		container.add(scoreboard);
+		mineFeild = new MineFeild(paramaters, scoreboard);
+		container.add(mineFeild);
+		frame.setPreferredSize(new Dimension(paramaters.cellSize*paramaters.width, paramaters.cellSize*paramaters.height+28+paramaters.cellSize));
 		frame.setVisible(true);
+		frame.add(container);
+		frame.pack();
+		frame.setBackground(Color.black);
 	}
 	public static void main(String[] args) {
-		new Main(30);
+		new Main();
 	}
 }
