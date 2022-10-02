@@ -6,6 +6,7 @@ import javax.swing.*;
 
 public class MineFeild extends JPanel {
 	Paramaters paramaters;
+	Scoreboard scoreboard;
 	private static final long serialVersionUID = 1L;
 	int openCells=0;
 	int flags=0;
@@ -18,6 +19,7 @@ public class MineFeild extends JPanel {
 	Cell[][] cells;
 		
 	MineFeild(Paramaters paramaters, Scoreboard scoreboard){
+		this.scoreboard=scoreboard;
 		this.paramaters=paramaters;
 		this.setLayout(null);
 		cells = new Cell[paramaters.height][paramaters.width];
@@ -141,14 +143,15 @@ public class MineFeild extends JPanel {
 	}
 	
 	
-	public void open(Cell cell){
+	private void open(Cell cell){
 		if(cell.isBomb) {
 			JOptionPane.showMessageDialog(null, "player lost");
 			notLost=false;
 		}
 		openCells++;
-		if(openCells==(paramaters.height*paramaters.width)-paramaters.mines)
-			JOptionPane.showMessageDialog(null, "player won!");
+		if(openCells==(paramaters.height*paramaters.width)-paramaters.mines) {
+			playerWon();
+		}
 		if(cell.val!=0)
 			cell.setText(""+cell.val);
 		else
@@ -162,7 +165,7 @@ public class MineFeild extends JPanel {
 			openAdjacentCells(cell);	
 		}
 	}
-	public void openAdjacentCells(Cell cell) {
+	private void openAdjacentCells(Cell cell) {
 		int x=cell.x;
 		int y=cell.y;
 		if(x>0) 
@@ -196,5 +199,9 @@ public class MineFeild extends JPanel {
 		if(y<paramaters.height-1&&x<paramaters.width-1) 
 			if(!cells[y+1][x+1].isOpen)
 				open(cells[y+1][x+1]);
+	}
+	private void playerWon() {
+		JOptionPane.showMessageDialog(null, "player won!");
+		new LeaderBoard(scoreboard.getTime());
 	}
 }

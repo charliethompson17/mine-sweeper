@@ -19,7 +19,7 @@ public class Main  {
 		paramaters = new Paramaters(frame);
 		startGame();
 	}
-	public void startGame() {
+	private void startGame() {
 		container = new JPanel();
 		container.setLayout(new BorderLayout());
 		paramaters = new Paramaters(frame);

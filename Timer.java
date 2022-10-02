@@ -54,4 +54,7 @@ public class Timer extends JLabel{
 		int seconds = (int) (time/1000);
 		this.setText("" + minutes+":"+seconds);
 	}
+	public long getTime() {
+		return System.currentTimeMillis()-startTime;
+	}
 }

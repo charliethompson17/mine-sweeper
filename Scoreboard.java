@@ -1,20 +1,16 @@
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.Font;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Scoreboard extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JLabel mines;
-	public JButton reset;
+	JButton reset;
 	private Timer time;
-	public int minesLeft;
+	private int minesLeft;
 	Scoreboard(Paramaters paramaters){
 		minesLeft=paramaters.mines;
 		int width = paramaters.screenSize.width;
@@ -54,5 +50,8 @@ public class Scoreboard extends JPanel{
 	public void increaseScore() {
 		minesLeft++;
 		update();
+	}
+	public long getTime() {
+		return time.getTime();
 	}
 }
