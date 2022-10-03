@@ -27,8 +27,11 @@ public class Scoreboard extends JPanel{
 		mines.setBackground(paramaters.openColor);
 		this.add(mines);
 		
-		reset = new JButton("\uD83D");
-		reset.setFont(new Font("Helvetica",Font.PLAIN,20));
+		
+		reset = new JButton();
+		reset.setFont(new Font("Arial Unicode MS", Font.PLAIN , 20)); 
+		String emoji = new String(Character.toChars(128512));
+		reset.setText(emoji);
 		reset.setForeground(Color.red);
 		reset.setLocation(paramaters.screenSize.width/2, 0);
 		reset.setSize(paramaters.cellSize, paramaters.cellSize);
@@ -36,6 +39,7 @@ public class Scoreboard extends JPanel{
 		reset.setBackground(paramaters.openColor);
 		reset.setBorder(null);
 		this.add(reset);
+		
 		
 		time = new Timer(paramaters);
 		this.add(time);

@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,6 +37,7 @@ public class MineFeild extends JPanel {
 				cell.setOpaque(true);
 				cell.setBackground(paramaters.closedColor);
 				cell.setBorder(BorderFactory.createLineBorder(paramaters.closedBorderColor,1));
+				cell.setFont(new Font("Arial Unicode MS", Font.PLAIN , 20));
 				
 				//handle left clicks
 				cell.addActionListener(new ActionListener() {
@@ -63,7 +65,7 @@ public class MineFeild extends JPanel {
 							if(!cell.flaged&&!cell.isOpen) {
 								if(flags<=paramaters.mines) {
 									if (e.getButton() == 3) {
-										cell.setText("F");
+										cell.setText(new String(Character.toChars(128681)));
 										cell.setOpaque(true);
 										cell.setBorder(null);
 										cell.setBackground(paramaters.flagColor);
