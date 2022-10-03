@@ -13,15 +13,15 @@ public class MineFeild extends JPanel {
 	boolean notLost=true;
 	
 	//this is the main premise of the program
+		Cell[][] cells;
 		/*the whole thing is just a grid of JButtons 
 		  wrapped in a custom class to 
 		  store critical data associated with each cell*/
-	Cell[][] cells;
-		
 	MineFeild(Paramaters paramaters, Scoreboard scoreboard){
 		this.scoreboard=scoreboard;
 		this.paramaters=paramaters;
 		this.setLayout(null);
+		this.setBackground(paramaters.openColor);
 		cells = new Cell[paramaters.height][paramaters.width];
 		
 		//Initialize each cell in the array
@@ -44,8 +44,12 @@ public class MineFeild extends JPanel {
 						if(notLost) {
 							Cell cell = (Cell)e.getSource();
 							if(!cell.flaged) {
-								if(notLost)
+								if(notLost) {
 									open(cell);
+									if(openCells==paramaters.numberOfCells-paramaters.mines) {
+										playerWon();
+									}
+								}
 							}
 						}
 					}
@@ -57,14 +61,16 @@ public class MineFeild extends JPanel {
 						if(notLost) {
 							Cell cell = (Cell)e.getSource();
 							if(!cell.flaged&&!cell.isOpen) {
-								if (e.getButton() == 3) {
-									cell.setText("F");
-									cell.setOpaque(true);
-									cell.setBorder(null);
-									cell.setBackground(paramaters.flagColor);
-									cell.flaged=true;
-									flags++;
-									scoreboard.reduceScore();
+								if(flags<=paramaters.mines) {
+									if (e.getButton() == 3) {
+										cell.setText("F");
+										cell.setOpaque(true);
+										cell.setBorder(null);
+										cell.setBackground(paramaters.flagColor);
+										cell.flaged=true;
+										flags++;
+										scoreboard.reduceScore();
+									}
 								}
 							}
 							else if(cell.flaged) {
@@ -81,14 +87,15 @@ public class MineFeild extends JPanel {
 			}
 		}
 		//place the set number of bombs in random cells
-		while(paramaters.mines>0) {
+		int mmines=paramaters.mines;
+		while(mmines>0) {
 			int x=(int)(Math.random()*paramaters.height);
 			int y=(int)(Math.random()*paramaters.width);
 			Cell cell = cells[x][y];
 			if(cell.val!=9) {
 				cell.val=9;
 				cell.isBomb=true;
-				paramaters.mines--;
+				mmines--;
 			}
 		}
 		//set each cell's value
@@ -149,9 +156,6 @@ public class MineFeild extends JPanel {
 			notLost=false;
 		}
 		openCells++;
-		if(openCells==(paramaters.height*paramaters.width)-paramaters.mines) {
-			playerWon();
-		}
 		if(cell.val!=0)
 			cell.setText(""+cell.val);
 		else
@@ -201,7 +205,9 @@ public class MineFeild extends JPanel {
 				open(cells[y+1][x+1]);
 	}
 	private void playerWon() {
+		System.out.println("player won");
 		JOptionPane.showMessageDialog(null, "player won!");
-		new LeaderBoard(scoreboard.getTime());
+		new AddName(scoreboard.getTime());
+		new LeaderBoard();
 	}
 }

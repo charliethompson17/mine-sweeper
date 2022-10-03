@@ -22,7 +22,6 @@ public class Main  {
 	private void startGame() {
 		container = new JPanel();
 		container.setLayout(new BorderLayout());
-		paramaters = new Paramaters(frame);
 		scoreboard = new Scoreboard(paramaters);
 		scoreboard.reset.addActionListener(new ActionListener() {
 			@Override
@@ -39,7 +38,7 @@ public class Main  {
 		frame.setVisible(true);
 		frame.add(container);
 		frame.pack();
-		frame.setBackground(Color.black);
+		frame.setBackground(paramaters.openColor);
 	}
 	public static void main(String[] args) {
 		new Main();

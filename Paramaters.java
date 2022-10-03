@@ -15,6 +15,7 @@ class Paramaters{
 		int height;
 		double density;
 		int mines;
+		int numberOfCells;
 		Color closedColor;
 		Color openColor;
 		Color openBorderColor;
@@ -46,6 +47,7 @@ class Paramaters{
 			}
 			density = Double.valueOf(prop.getProperty("Density")); 
 			mines = (int) (1.0*width*height*density);
+			numberOfCells=width*height;
 			closedColor = new Color(Integer.parseInt(prop.getProperty("closedColor_R")),Integer.parseInt(prop.getProperty("closedColor_G")),Integer.parseInt(prop.getProperty("closedColor_B")));
 			openColor = new Color(Integer.parseInt(prop.getProperty("openColor_R")),Integer.parseInt(prop.getProperty("openColor_G")),Integer.parseInt(prop.getProperty("openColor_B")));
 			closedBorderColor = new Color(Integer.parseInt(prop.getProperty("closedBorderColor_R")),Integer.parseInt(prop.getProperty("closedBorderColor_G")),Integer.parseInt(prop.getProperty("closedBorderColor_B")));
